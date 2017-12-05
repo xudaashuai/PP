@@ -1,16 +1,19 @@
 <template>
 
   <div class="chat-ui">
-    <div class="message-list">
+    <div class="message-list" id="m">
       <div v-for="item in messages" :class="item.type">
         <div class="name">
           {{item.name}}
         </div>
-          <div class="message">
-            <h3>{{item.content}}</h3>
-          </div>
+        <div class="message">
+          <h3>{{item.content}}</h3>
+        </div>
       </div>
+
+      <span id="msg_end"></span>
     </div>
+
     <Input type="textarea" placeholder="输入爱的讯息吧"
            :autosize="{minRows: 5,maxRows: 5}"
            v-model="message.content"
@@ -26,8 +29,8 @@
         messages: [
           {
             content: '你好呀，超爱你的',
-            name:'',
-            type:'left'
+            name: '',
+            type: 'left'
           }
         ],
         message: {
@@ -38,22 +41,26 @@
     sockets: {
       message: function (data) {
         console.log(data)
-        data.type='left'
+        data.type = 'left'
         this.messages.push(data)
+        document.getElementById('msg_end').scrollIntoView(false)
       }
     },
     methods: {
       keyup: function (event) {
-          this.$socket.emit('message', this.message)
+        this.$socket.emit('message', this.message)
         this.messages.push({
-          type:'right',
-          content:this.message.content
+          type: 'right',
+          content: this.message.content
         })
-          this.message.content=''
-          this.$Notice.info({
-            desc:'发送成功了呢'
-          })
-
+        this.message.content = ''
+        this.$Notice.info({
+          desc: '发送成功了呢'
+        })
+        setTimeout(function () {
+          let t=document.getElementById('m')
+          t.scrollTop=t.scrollHeight
+        },100)
       }
     }
   }
@@ -80,23 +87,29 @@
     align-self: flex-start;
     border-radius: 10px;
   }
+
   .right {
     align-self: flex-end;
   }
-  .name{
+
+  .name {
     text-align: left;
     padding: 3px 0;
   }
-  .message{
+
+  .message {
     border-radius: 10px;
     padding: 20px;
   }
-  .left>.message{
+
+  .left > .message {
     background-color: #ffffff;
   }
-  .right>.message{
+
+  .right > .message {
     background-color: seagreen;
   }
+
   .input {
 
   }
