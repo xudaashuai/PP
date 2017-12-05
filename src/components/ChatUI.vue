@@ -43,7 +43,10 @@
         console.log(data)
         data.type = 'left'
         this.messages.push(data)
-        document.getElementById('msg_end').scrollIntoView(false)
+        setTimeout(function () {
+          let t=document.getElementById('m')
+          t.scrollTop=t.scrollHeight
+        },100)
       }
     },
     methods: {
