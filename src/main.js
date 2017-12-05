@@ -6,7 +6,7 @@ import router from './router'
 import store from './store/index'
 import VueSocketio from 'vue-socket.io';
 Vue.config.productionTip = false
-Vue.use(VueSocketio, 'http://localhost',store);
+Vue.use(VueSocketio, 'http://101.236.6.203',store);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
