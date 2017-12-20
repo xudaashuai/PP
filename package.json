@@ -8,19 +8,20 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "go":"node backend/app.js",
-    "run":"npm run dev && npm run go",
-    "s":"npm run build && npm run go"
+    "go": "node backend/app.js",
+    "run": "npm run dev && npm run go",
+    "s": "npm run build && npm run go"
   },
   "dependencies": {
     "express": "^4.16.2",
     "iview": "^2.7.3",
+    "socket.io": "latest",
+    "underscore": "latest",
     "vue": "^2.5.2",
+    "vue-localstorage": "^0.5.0",
     "vue-router": "^3.0.1",
     "vue-socket.io": "^2.1.1-a",
-    "vuex": "^3.0.1",
-    "socket.io": "latest",
-    "underscore": "latest"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

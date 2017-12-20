@@ -5,8 +5,11 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import VueSocketio from 'vue-socket.io';
+import VueLocalStorage from 'vue-localstorage'
+
+Vue.use(VueLocalStorage);
 Vue.config.productionTip = false
-Vue.use(VueSocketio, 'http://101.236.6.203',store);
+Vue.use(VueSocketio, 'http://localhost',store);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

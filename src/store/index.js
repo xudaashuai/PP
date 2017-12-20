@@ -19,6 +19,9 @@ export default new Vuex.Store({
   getters: {
     friends: state => {
       return state.users.filter(user => user!=state.username)
+    },
+    username: state => {
+      return state.username
     }
   }
 })

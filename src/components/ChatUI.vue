@@ -2,7 +2,7 @@
 
   <div class="chat-ui">
     <div class="message-list" id="m">
-      <div v-for="item in messages" :class="item.type">
+      <div v-for="item in messages" :class="item.name==username?'right':'left'">
         <div class="name">
           {{item.name}}
         </div>
@@ -24,13 +24,16 @@
 <script>
   export default {
     name: 'ChatUI',
+    created:function () {
+      this.messages=JSON.parse(this.$localStorage.get('messages','[]'))
+      console.log(this.messages)
+    },
     data() {
       return {
         messages: [
           {
             content: '你好呀，超爱你的',
-            name: '',
-            type: 'left'
+            name: 't',
           }
         ],
         message: {
@@ -38,11 +41,18 @@
         }
       }
     },
+    computed:{
+      username () {
+        return this.$store.getters.username
+      }
+    },
     sockets: {
       message: function (data) {
         console.log(data)
-        data.type = 'left'
         this.messages.push(data)
+        this.$localStorage.set('messages',JSON.stringify(this.messages))
+
+        console.log(this.messages)
         setTimeout(function () {
           let t=document.getElementById('m')
           t.scrollTop=t.scrollHeight
@@ -53,9 +63,11 @@
       keyup: function (event) {
         this.$socket.emit('message', this.message)
         this.messages.push({
-          type: 'right',
+          name:this.username,
           content: this.message.content
         })
+        this.$localStorage.set('messages',JSON.stringify(this.messages))
+        console.log(this.messages)
         this.message.content = ''
         this.$Notice.info({
           desc: '发送成功了呢'
@@ -82,10 +94,14 @@
     overflow: auto;
     flex-grow: 1;
     display: flex;
+    padding: 5px;
     flex-direction: column;
     align-items: flex-start;
   }
-
+  .left , .right{
+    display: flex;
+    flex-direction: column;
+  }
   .left {
     align-self: flex-start;
     border-radius: 10px;
@@ -97,12 +113,21 @@
 
   .name {
     text-align: left;
-    padding: 3px 0;
+    padding: 3px 3px;
+    background-color: #cccccc;
+    border-radius: 5px;
+    align-self: flex-start;
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
-
+  .right>.name{
+    text-align: right;
+    align-self: flex-end;
+  }
   .message {
     border-radius: 10px;
     padding: 20px;
+
   }
 
   .left > .message {

@@ -4,7 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const io = require('socket.io')(80);
 const _ = require("underscore")._;
-names = []
+names = ['admin']
 io.sockets.on('connection', function (socket) {
   socket.on('login', function (data) {
       console.log(data);
@@ -37,6 +37,8 @@ io.sockets.on('connection', function (socket) {
       console.log('发送成功', data);
     });
   socket.on('disconnect', function (data) {
+    if (socket.name===undefined)
+      return
     console.log(socket.name, '断开连接了哦')
     names.splice(socket.name)
     socket.broadcast.emit('info', {
